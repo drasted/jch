@@ -1,0 +1,25 @@
+class Dialog(object):
+   def _init_(
+           self,
+           _id,
+           sentence,
+           node_list,
+           weight=1,
+           status='chatting',
+           global_keys=list(),
+           **kwargs
+    ):
+
+        self.id = _id
+        self.sentnce = sentence
+        self.node_list = [
+             DialogNode(**slot)
+             for slot in node_list
+        ]
+        self.weight = weight
+        self.context = {}
+        self.global_keys = global_keys
+        # 这里的状态分为： chatting，waiting_response
+        self.status = status
+        # 标识当次的ask有没有捕获到信息，如果有则为true，没有则为false
+
