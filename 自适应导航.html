@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+<style>
+*{margin:0;padding:0;}
+.btn{margin-top:10px;height:40px;width:40px;border:1px solid #111;float:right;margin-right:50px;display:none;text-align:center; opacity: 0.8;transition: all 0.5s;cursor: pointer;}
+    .btn:hover { opacity: 1; }
+.btn span{  display: block;width: 60%;height: 5px;border-radius: 5px;margin: 6px auto;background-color: #fff;}
+nav{width:100%;height:65px;background-color:#888;color:#fff;line-height:65px;}
+.nav{width:80%;height:65px;margin:0 auto;}
+.logo{width:150px;height:65px;line-height:65px;text-align:center;outline:1px solid #111;float:left;}
+.navbar{float:right;margin-right:100px;}
+li{padding:0 30px;border:1px solid gray;display:inline-block;line-height:63px;text-align:center;}
+li a{color:#fff;display:block;}
+@media screen and (min-width:900px) and (max-width:1400px){
+    .navbar{margin-right:0;}
+    .navbar li:nth-child(6){display:none;}
+
+}
+@media screen and (min-width:900px) and (max-width:1100px){
+    .navbar{margin-right:0;}
+    .navbar li:nth-child(5){display:none;}
+    .navbar li:nth-child(4){display:none;}
+
+
+}
+
+@media (max-width:1100px){
+        header>h1{font-size:35px;}
+
+}
+
+@media screen and (max-width: 900px){
+     .navbar li:nth-child(5){display:block;}
+    .navbar li:nth-child(4){display:block;}
+    .navbar li:nth-child(6){display:block;}
+    .navbar{float:left;position: absolute;top:65px;left:0;height:0;width:100%;background-color:#444;overflow: hidden;}
+    .btn{display:block;}
+    .navbar ul{width:100%;height:200px;}
+    .navbar li {
+                width: 100%;
+                margin: 0 auto;
+                float: none;
+            }
+}
+header{width: 100%;height:400px;line-height:400px;text-align:center;background-color:#888;opacity: .5;}
+h1{font-size:50px;font-weight:bold;color:#fff;}
+</style>
+</head>
+<body>
+<nav  id="nav">
+  <div class="nav">
+      <div class="logo">LOGO</div>
+      <div class="btn" id="btn"><span></span><span></span><span></span></div>
+        <div id="navbar" class="navbar">
+                <ul>
+                    <li><a href="#">首页</a></li>
+                    <li><a href="#">公司简介</a></li>
+                    <li><a href="#">产品介绍</a></li>
+                    <li><a href="#">联系方式</a></li>
+                    <li><a href="#">联系方式</a></li>
+                    <li><a href="#">联系方式</a></li>
+                </ul>
+        </div>
+  </div>
+</nav>
+<header id="header" class="">
+    <h1>container</h1>
+</header>
+<script>
+    var nav = document.getElementById("nav");
+    var btn = document.getElementById("btn");
+    var navbar = document.getElementById("navbar");
+    // offsetHeight   元素的高度
+    var flag = true;
+    var timer = null;
+    var t = navbar.offsetHeight;
+    var maxH = 400;
+    var minH = 0;
+    // 最外盒子
+    var navT = nav.offsetHeight;
+    var navMaxH = 470;
+    var navMinH = 65;
+    btn.onclick = function(){
+        if(flag){
+            clearInterval(timer)
+            navbar.style.borderTop = "1px solid #fff";
+            timer = setInterval(function(){
+                    navT += 30;
+                    t  += 30;
+                if(navT >= navMaxH || t >= maxH){
+                    navT = navMaxH;
+                    t = maxH;
+                    clearInterval(timer);
+                }
+                navbar.style.height = t + "px";
+                nav.style.height = navT + "px";
+            },20)
+            flag = false;
+        }else{
+            clearInterval(timer);
+            navbar.style.borderTop = "none";
+            timer = setInterval(function(){
+
+                t -= 30;
+                navT -= 30;
+                if(t <= minH || navT <= navMinH){
+                    t = minH;
+                    navT = navMinH;
+                    clearInterval(timer);
+                }
+                navbar.style.height = t + "px";
+                nav.style.height = navT + "px";
+            },20);
+            flag = true;
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <title>Trace Demo</title>
+    <script src="http://cdn.bootcss.com/echarts/3.5.3/echarts.min.js"></script>
+    <script src="http://cdn.bootcss.com/echarts/3.5.3/extension/bmap.min.js"></script>
+    <script src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+</head>
+<body style="margin:0px;">
+    <div id="main" style="width: 1000px;height:600px;"></div>
+    <script type="text/javascript">
+	var a= 
+    data = [
+    	[121.325297,31.14397,30,"2017/05/05 09:00:00"],
+		[121.344773,31.156023,80,"2017/05/05 09:05:00"],
+		[121.356019,31.1614,120,"2017/05/05 09:10:00"],
+		[121.375459,31.163964,70,"2017/05/05 09:15:00"],
+		[121.391161,31.172245,90,"2017/05/05 09:20:00"],
+		[121.404204,31.176262,110,"2017/05/05 09:25:00"],
+		[121.424865,31.181051,120,"2017/05/05 09:30:00"],
+		[121.4341,31.191214,130,"2017/05/05 09:35:00"],
+		[121.443371,31.201902,55,"2017/05/05 09:40:00"],
+		[121.456243,31.205752,80,"2017/05/05 09:45:00"],
+		[121.467319,31.209033,125,"2017/05/05 09:50:00"],
+		[121.475404,31.21206,150,"2017/05/05 09:55:00"],
+		[121.483669,31.21521,85,"2017/05/05 10:00:00"],
+		[121.50494,31.222714,120,"2017/05/05 10:10:00"],
+		[121.522907,31.236239,120,"2017/05/05 10:15:00"],
+		[121.533471,31.234881,70,"2017/05/05 10:20:00"],
+		[121.557294,31.21592,45,"2017/05/05 10:25:00"],
+		[121.563977,31.209404,90,"2017/05/05 10:30:00"],
+		[121.594088,31.207921,120,"2017/05/05 10:35:00"],
+		[121.608605,31.20996,100,"2017/05/05 10:40:00"],
+		[121.627182,31.216723,150,"2017/05/05 10:45:00"]
+    ];
+    </script>
+    <script type="text/javascript">
+		var myChart = echarts.init(document.getElementById('main'));
+
+		myChart.setOption(option = {
+			title: {
+				text: 'Trace Demo',
+				left: 'center'
+			},
+			tooltip : {
+				formatter: function(data){
+					var v = data.value;
+					return '沪A00001<br>时间：'+v[3]+'<br>速度：'+v[2]+'<br>位置：'+v[0]+','+v[1];
+				}
+			},
+			bmap: {
+				roam: true,
+				enableMapClick: false,
+				mapStyle: {
+					styleJson: [{
+						"featureType": "all",
+						"elementType": "all",
+						"stylers": {
+							"lightness": 47,
+							"saturation": -100
+						}
+					}, {
+						"featureType": "highway",
+						"elementType": "geometry.fill",
+						"stylers": {
+							"color": "#ffffff"
+						}
+					}, {
+						"featureType": "poi",
+						"elementType": "labels.icon",
+						"stylers": {
+							"visibility": "off"
+						}
+					}, {
+						"featureType": "road",
+						"elementType": "labels",
+						"stylers": {
+							"visibility": "on"
+						}
+					}]
+				}
+			},
+			visualMap: {
+				type: "piecewise",
+				dimension: 2,
+				pieces: [
+					{min:0, max:30, color:"#5AB1EF"},
+					{min:30, max:50, color:"#2EC7C9"},
+					{min:50, max:80, color:"#B6A2DE"},
+					{min:80, max:100, color:"#FFB980"},
+					{min:100, max:120, color:"#ED868C"},
+					{min:120, max:150, color:"#FF0000"},
+					{min:150, max:200, color:"#C23531"},
+				],
+				formatter: "速度 {value}-{value2}",
+				bottom: "50px",
+				backgroundColor: "rgba(255,255,255,0.8)",
+				inRange: {
+					symbol: "circle"
+				}
+			},
+			series : [
+				{
+					name: 'history',
+					type: 'effectScatter',
+					coordinateSystem: 'bmap',
+					data: [],
+					rippleEffect: {
+						brushType: 'stroke'
+					}
+				},
+				{
+					name: 'current',
+					type: 'effectScatter',
+					coordinateSystem: 'bmap',
+					data: [],
+					rippleEffect: {
+						scale: 5
+					}
+				}
+			]
+		});
+        
+		var bmap = myChart.getModel().getComponent('bmap').getBMap();
+		bmap.addControl(new BMap.NavigationControl({type: BMAP_NAVIGATION_CONTROL_SMALL}));
+		bmap.centerAndZoom("上海", 12);
+		
+		function refresh() {
+			if(data.length == 0) {
+				return;
+			}
+
+			if(p = option.series[1].data[0]) {
+				option.series[0].data.push(p);
+			}
+			option.series[1].data[0] = data.shift();
+			myChart.setOption(option);
+			
+			if(data.length > 0) {
+				refresh();
+			}
+		}
+		
+		refresh()
+		
+    </script>
+</body>
+</html>
+
+
+

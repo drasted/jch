@@ -1,0 +1,95 @@
+﻿
+<!DOCTYPE html>
+<html style="height: 100%">
+   <head>
+        <meta charset="utf-8">
+        <script src="https://cdn.bootcss.com/jquery/2.1.4/jquery.js"></script>
+        <script src="http://echarts.baidu.com/dist/echarts.min.js"></script>
+        <script src="http://echarts.baidu.com/asset/map/js/province/hebei.js"></script>
+        <style type="text/css">
+            * {
+                margin: 0;
+                padding: 0;
+            }
+        </style>
+   </head>
+<body style="height: 100%; margin: 0">
+<div id="maps" style="width: 800px; height: 800px;"></div>
+
+<script type="text/javascript">
+
+    var myChartMap = echarts.init(document.getElementById('maps'));
+
+    var option = {
+        title: {
+            text: '河北省',
+            x: 'center',
+            textStyle: {
+                color: '#404a59'
+            }
+        },
+        tooltip: {
+            trigger: 'item',
+        },
+        dataRange: { 
+            x: 'left',
+            y: 'bottom',
+            text: ['高', '低'],
+            color: ['#D200D2', '#FFBFFF'],
+            calculable: true
+        },
+        toolbox: {
+            show: true,
+            orient: 'vertical',
+            x: 'right',
+            y: 'center',
+            feature: {
+                dataView: { show: true, title: "数据视图", readOnly: false, lang: ["Data View", "close", "refresh"] },
+                restore: { show: true, title: "还原" },
+                saveAsImage: { show: true, title: "保存为图片", type: "png", lang: ["点击保存"] }
+            }
+        },
+        series: [
+            {
+                tooltip: { trigger: 'item' },
+                name: '下载量',
+                type: 'map',
+                mapType: '河北',
+                roam: false,
+                itemStyle: {
+                    normal: {
+                        label: { show: true }
+                    },
+                    emphasis: { label: { show: true } }
+                },
+                data: []
+            }
+        ],
+        animation: false
+
+    };
+    myChartMap.setOption(option, true);
+    //异步加载数据
+
+    var data = [{name:"保定市",value:1001},{name:"衡水市",value:101},{name:"廊坊市",value:901}];
+    // 填入数据 
+    myChartMap.setOption({
+        tooltip: {
+            trigger: 'item',
+        },
+        series: [{
+            name: '下载量', 
+            type: 'map', 
+            mapType: '河北', 
+            roam: false,
+            itemStyle: {
+                normal: { label: { show: true } },
+                emphasis: { label: { show: true } }
+            }, 
+            data: data
+        }]
+    });
+
+</script>
+</body>
+</html>
